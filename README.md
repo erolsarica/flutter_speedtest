@@ -1,5 +1,5 @@
-# flutter_speedtest
+# Speed Test App
 
-A new Flutter project.
+Created with Flutter
 
 
