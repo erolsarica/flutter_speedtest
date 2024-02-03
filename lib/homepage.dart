@@ -62,7 +62,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
                         ),
                       ),
                       Text(
-                        'Upload Rate',
+                        'Upload Ratee',
                         style: TextStyle(
                           color: Colors.white,
                           //fontSize: 24,
