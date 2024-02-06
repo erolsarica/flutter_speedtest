@@ -98,7 +98,11 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
             const SizedBox(height: 10),
             SfRadialGauge(
               axes: [
-                RadialAxis(),
+                RadialAxis(
+                  ranges: [
+                    
+                  ],
+                ),
               ],
             ),
           ],
