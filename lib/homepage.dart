@@ -100,7 +100,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
               axes: [
                 RadialAxis(
                   ranges: [
-                    
+                    GaugeRange(startValue: , endValue)
                   ],
                 ),
               ],
