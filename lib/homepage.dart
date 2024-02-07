@@ -23,6 +23,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
   String? _asn;
 
   String unitText = '';
+  final speedTest = FlutterInternetSpeedTest();
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +46,11 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
             ),
             const SizedBox(height: 10),
             LinearPercentIndicator(
-              percent: showProgress/100.0,
+              percent: showProgress / 100.0,
               lineHeight: 20,
               backgroundColor: Colors.white,
               progressColor: Colors.green,
-              barRadius: const Radius.circular(7),
+              barRadius: const Radius.circular(10),
               center: Text(
                 '${(showProgress * 100).toStringAsFixed(2)}%',
                 style: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
@@ -155,7 +156,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
                     GaugeAnnotation(
                         widget: Container(
                           child: Text(
-                            _displayRate.toStringAsFixed(2),
+                            _displayRate.toStringAsFixed(2) + unitText,
                             style: const TextStyle(
                               fontSize: 20,
                               color: Colors.white,
@@ -185,7 +186,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                speedTest();
+                testSpeed();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
@@ -209,8 +210,8 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
     );
   }
 
-  speedTest() {
-    final speedTest = FlutterInternetSpeedTest();
+  testSpeed() {
+    resetValues();
     speedTest.startTesting(
       //true(default)
       onStarted: () {
@@ -224,7 +225,6 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
           _downloadRate = download.transferRate;
           showProgress = 100.0;
           _displayRate = _downloadRate;
-          
         });
         setState(() {
           unitText = upload.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
@@ -236,8 +236,8 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
       },
       onProgress: (double percent, TestResult data) {
         setState(() {
-         unitText = data.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
-         if (data.type == TestType.download) {
+          unitText = data.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
+          if (data.type == TestType.download) {
             _downloadRate = data.transferRate;
             showProgress = percent;
             _displayRate = _downloadRate;
@@ -270,7 +270,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
         setState(() {
           unitText = data.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
           _downloadRate = data.transferRate;
-          _displayRate = _downloadRate;        
+          _displayRate = _downloadRate;
         });
       },
       onUploadComplete: (TestResult data) {
@@ -284,5 +284,18 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
         // TODO Request cancelled callback
       },
     );
+  }
+
+  resetValues() {
+    setState(() {
+      _downloadRate = 0.0;
+      _uploadRate = 0.0;
+      _displayRate = 0.0;
+      showProgress = 0.0;
+      speedTestStart = false;
+      _ip = null;
+      _isp = null;
+      _asn = null;
+    });
   }
 }
