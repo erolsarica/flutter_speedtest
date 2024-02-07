@@ -40,11 +40,11 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
               'Progress',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 24,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             LinearPercentIndicator(
               percent: showProgress / 100.0,
               lineHeight: 20,
@@ -52,8 +52,8 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
               progressColor: Colors.green,
               barRadius: const Radius.circular(10),
               center: Text(
-                '${(showProgress * 100).toStringAsFixed(2)}%',
-                style: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+                '${(showProgress).toStringAsFixed(2)}%',
+                style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 10),
