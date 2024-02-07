@@ -22,6 +22,8 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
   String? _isp;
   String? _asn;
 
+  String unitText = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +86,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${_downloadRate.toStringAsFixed(2)}',
+                        '${_downloadRate.toStringAsFixed(2)} $unitText',
                         style: const TextStyle(
                           color: Colors.white,
                           //fontSize: 24,
@@ -92,7 +94,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
                         ),
                       ),
                       Text(
-                        '${_uploadRate.toStringAsFixed(2)}',
+                        '${_uploadRate.toStringAsFixed(2)} $unitText',
                         style: const TextStyle(
                           color: Colors.white,
                           //fontSize: 24,
@@ -218,27 +220,30 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
       },
       onCompleted: (TestResult download, TestResult upload) {
         setState(() {
+          unitText = download.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
           _downloadRate = download.transferRate;
-          showProgress = 100;
+          showProgress = 100.0;
           _displayRate = _downloadRate;
           
         });
         setState(() {
-          _uploadRate = download.transferRate;
-          showProgress = 100;
+          unitText = upload.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
+          _uploadRate = upload.transferRate;
+          showProgress = 100.0;
           _displayRate = _uploadRate;
           speedTestStart = false;
         });
       },
       onProgress: (double percent, TestResult data) {
         setState(() {
+         unitText = data.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
          if (data.type == TestType.download) {
             _downloadRate = data.transferRate;
-            showProgress = percent / 100;
+            showProgress = percent;
             _displayRate = _downloadRate;
           } else {
             _uploadRate = data.transferRate;
-            showProgress = percent / 100;
+            showProgress = percent;
             _displayRate = _uploadRate;
           }
         });
@@ -263,12 +268,14 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
       },
       onDownloadComplete: (TestResult data) {
         setState(() {
+          unitText = data.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
           _downloadRate = data.transferRate;
           _displayRate = _downloadRate;        
         });
       },
       onUploadComplete: (TestResult data) {
         setState(() {
+          unitText = data.unit == SpeedUnit.kbps ? 'Kbps' : 'Mbps';
           _uploadRate = data.transferRate;
           _displayRate = _uploadRate;
         });
